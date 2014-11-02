@@ -18,6 +18,7 @@ public class CallNumber extends CordovaPlugin
         Log.d("monmouthtelecom", "it's coming here");
         try {
             Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setPackage("com.android.phone");
             intent.setData(Uri.parse(number));
             cordova.getActivity().startActivity(intent);
             callbackContext.success();
