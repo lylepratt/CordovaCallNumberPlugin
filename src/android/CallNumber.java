@@ -12,13 +12,20 @@ import android.util.Log;
 public class CallNumber extends CordovaPlugin
 {
 	@Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         String number = args.getString(0);
         number = "tel:"+number;
-        Log.d("monmouthtelecom", "it's coming here");
         try {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setPackage("com.android.phone");
+            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT) {
+                // only for gingerbread and newer versions
+            	Log.d("CallNumber", "New Android Version");
+            	intent.setPackage("com.android.server.telecom");
+            }
+            else {
+            	intent.setPackage("com.android.phone");
+            }
+            
             intent.setData(Uri.parse(number));
             cordova.getActivity().startActivity(intent);
             callbackContext.success();
